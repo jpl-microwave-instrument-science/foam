@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atmosphere Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ionosphere Module" href="ionosphere.html" />
+    <link rel="prev" title="Ocean Module" href="ocean.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ocean.html">Ocean</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Atmosphere Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/atmosphere.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="atmosphere-module">
+<h1>Atmosphere Module<a class="headerlink" href="#atmosphere-module" title="Permalink to this headline"></a></h1>
+<p>The Atmosphere module defines the atmosphere object, which loads physical characteristics and defines functions relevant to the
+emission by and propagation of microwave radiation through the atmosphere. The module can be used in either ‘simple’ or ‘full’ mode,
+both of which read ancillary data from <a class="reference external" href="https://disc.gsfc.nasa.gov/datasets/M2T1NXSLV_5.12.4/summary">MERRA-2 Single Level Diagnostics products</a></p>
+<p>Dev note: For now, the default MERRA set will need to be downloaded from <a class="reference external" href="https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2/M2T1NXSLV.5.12.4/2005/01/MERRA2_300.tavg1_2d_slv_Nx.20050101.nc4">https://goldsmr4.gesdisc.eosdis.nasa.gov/data/MERRA2/M2T1NXSLV.5.12.4/2005/01/MERRA2_300.tavg1_2d_slv_Nx.20050101.nc4</a> and manually placed in the assets folder. A cleaner way to do this (e.g. local cache) will be implemented before public release</p>
+<span class="target" id="module-foam.atmosphere"></span><dl class="py class">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.atmosphere.</span></span><span class="sig-name descname"><span class="pre">atmosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime='2015-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode='simple'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader=&lt;class</span> <span class="pre">'foam.utils.reader.MERRAReader'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader_kwargs=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_res=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere" title="Permalink to this definition"></a></dt>
+<dd><p>The atmosphere class reads atmospheric state variables and implements radiative
+transfer calculations to determine atmospheric brightness temperatures. An empirical model for 
+atmospheric absorption and emission is also included if the user does not require the accuracy
+of line-by-line radiative transfer results.</p>
+<p>Inputs: 
+:param datetime: Either a single date or a pair of dates bracketing an interval of time</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Several formats are permissible, such as</dt><dd><ul class="simple">
+<li><p>String or iterable of strings</p></li>
+<li><p>Python datetime or iterable of datetimes</p></li>
+<li><p>Numpy datetime64 or iterable …</p></li>
+<li><p>Pandas timestamp or iterable …</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mode</strong> – ‘simple’ mode uses model functions to predict atmospheric emission, while ‘full’ mode
+performs the full radiative transfer calculations. There is also a ‘simple+tdep’ mode
+which uses a temperature dependence in the model function</p></li>
+<li><p><strong>online</strong> – Toggles online or offline mode</p></li>
+<li><p><strong>file</strong> – Atmosphere file location. Default is None, which reads a stock file from the cache.</p></li>
+<li><p><strong>reader</strong> – Atmosphere reader method, default is MERRAReader</p></li>
+<li><p><strong>reader_kwargs</strong> – Reader keyword arguments</p></li>
+<li><p><strong>verbose</strong> – Toggles code verbosity</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.read_atmosphere">
+<span class="sig-name descname"><span class="pre">read_atmosphere</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.read_atmosphere" title="Permalink to this definition"></a></dt>
+<dd><p>Reads atmospheric state from online or local files 
+Only accepted format is MERRA-2 Time Averaged Single Level Diagnostics file (e.g. …tavg1_2d_slv_Nx…)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.isa_profiles">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">isa_profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr_wv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr_lw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.isa_profiles" title="Permalink to this definition"></a></dt>
+<dd><p>Generates nominal vertical profiles using the International Standard Atmosphere given
+column integrated abundances. The returned profiles are specified in order from top of
+atmosphere to surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T0</strong> – Air surface temperature in Kelvin</p></li>
+<li><p><strong>P0</strong> – Air surface pressure in Pascals</p></li>
+<li><p><strong>pr_wtr</strong> – Total column precipitable water vapor in kg/m2 (equal to mm)</p></li>
+<li><p><strong>pr_lw</strong> – Total column precipitable water vapor in kg/m2 (equal to mm)</p></li>
+<li><p><strong>res</strong> – Altitude grid resolution (dz) in km</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>T - Temperature profile in K</p></li>
+<li><p>P - Pressure profile in pascals</p></li>
+<li><p>dens - Density profile in kg/m3</p></li>
+<li><p>wv - Precipitable water vapor profile in kg/kg</p></li>
+<li><p>lw - Precipitable liquid water profile in kg/kg</p></li>
+<li><p>z - Altitude grid in km</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.get_atmosphere_tb">
+<span class="sig-name descname"><span class="pre">get_atmosphere_tb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.get_atmosphere_tb" title="Permalink to this definition"></a></dt>
+<dd><p>Get brightness temperatures and atmospheric opacity from either the empirical model or the line-by-line model</p>
+<p>Inputs: 
+:param frequency: Frequency in MHz 
+:param time: String or array of times, converted to interpolator</p>
+<blockquote>
+<div><p>epoch reference if in_epoch=False</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> – Latitude in degrees</p></li>
+<li><p><strong>lon</strong> – Longitude in degrees</p></li>
+<li><p><strong>angle</strong> – Emission angle in degrees</p></li>
+<li><p><strong>in_epoch</strong> – See above</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>tbup - Upwelling brightness temperature</p></li>
+<li><p>tbdn - Downwelling brightness temperature</p></li>
+<li><p>transup - Upwelling optical transmisivity</p></li>
+<li><p>transdn - Downwelling optical transmissivity</p></li>
+<li><p>wup - Upwelling weighting function</p></li>
+<li><p>wdn - Downwelling weighting function</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.get_atmosphere_prop">
+<span class="sig-name descname"><span class="pre">get_atmosphere_prop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prwtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lwtr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">airtemp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">airpres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.get_atmosphere_prop" title="Permalink to this definition"></a></dt>
+<dd><p>Add docstring per above</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.rad_trans">
+<span class="sig-name descname"><span class="pre">rad_trans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lwc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.rad_trans" title="Permalink to this definition"></a></dt>
+<dd><p>Microwave radiative transfer calculations for input atmosphere compositions. 
+Input convention is: 0 index - top of atmosphere
+The height index should be the first for all variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq</strong> – Frequency in MHz</p></li>
+<li><p><strong>p</strong> – Pressure profile in Pa</p></li>
+<li><p><strong>t</strong> – Temperature profile in K</p></li>
+<li><p><strong>q</strong> – Water vapor profile in kg/kg</p></li>
+<li><p><strong>lwc</strong> – Liquid water content in kg/kg</p></li>
+<li><p><strong>z</strong> – Altitude grid in km</p></li>
+<li><p><strong>angle</strong> – Look angle in degrees</p></li>
+</ul>
+</dd>
+</dl>
+<p>return: Atmospheric opacity in 1/km</p>
+<p>This function and the others that it calls were originally written by P. Rosenkranz and G. Petty, 
+and converted to Python by T. Islam.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.n2abs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n2abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.n2abs" title="Permalink to this definition"></a></dt>
+<dd><p>Computes absorption due to nitrogen in air</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>P</strong> – Pressure in millibars</p></li>
+<li><p><strong>F</strong> – Frequency in MHz</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Nitrogen absorption in 1/km</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.o2abs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">o2abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEMP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PRES</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VAPDEN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FREQ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.o2abs" title="Permalink to this definition"></a></dt>
+<dd><p>Computes absorption due to oxygen in air</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TEMP</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>PRES</strong> – Pressure in millibars. Valid from 3 to 1000 mbar</p></li>
+<li><p><strong>VAPDEN</strong> – Water vapor density in g/m^3</p></li>
+<li><p><strong>FREQ</strong> – Frequency in MHz. Valid from 0 to 900 GHz</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Oxygen absorption in 1/km</p>
+</dd>
+</dl>
+<p>Originally written by P. Rosenkranz. His comments are below</p>
+<p>REFERENCE FOR EQUATIONS AND COEFFICIENTS:
+P.W. ROSENKRANZ, CHAP. 2 AND APPENDIX, IN ATMOSPHERIC REMOTE SENSING
+BY MICROWAVE RADIOMETRY (M.A. JANSSEN, ED. 1993)
+AND H.J. LIEBE ET AL, JQSRT V.48, PP.629-643 (1992)
+(EXCEPT: SUBMILLIMETER LINE INTENSITIES FROM HITRAN92)
+LINES ARE ARRANGED 1-,1+,3-,3+,ETC. IN SPIN-ROTATION SPECTRUM</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.h2oabs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">h2oabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RHO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.h2oabs" title="Permalink to this definition"></a></dt>
+<dd><p>Computes absorption in atmosphere due to water vapor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>P</strong> – Pressure in millibar - Valid from 0.1 to 1000 mbar</p></li>
+<li><p><strong>RHO</strong> – Water vapor density in g/m^3</p></li>
+<li><p><strong>F</strong> – Frequency in MHz - Valid from 0 to 800 GHz</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Absorption in 1/km</p>
+</dd>
+</dl>
+<p>Originally written by P. Rosenkranz. His comments are below</p>
+<p>REFERENCES-
+LINE INTENSITIES FROM HITRAN92 (SELECTION THRESHOLD=
+HALF OF CONTINUUM ABSORPTION AT 1000 MB).
+WIDTHS MEASURED AT 22,183,380 GHZ, OTHERS CALCULATED:
+H.J.LIEBE AND T.A.DILLON, J.CHEM.PHYS. V.50, PP.727-732 (1969) &amp;
+H.J.LIEBE ET AL., JQSRT V.9, PP. 31-47 (1969)  (22GHz)
+A.BAUER ET AL., JQSRT V.37, PP.531-539 (1987) &amp; 
+ASA WORKSHOP (SEPT. 1989) (380GHz)
+AND A.BAUER ET AL., JQSRT V.41, PP.49-54 (1989) (OTHER LINES).
+AIR-BROADENED CONTINUUM BASED ON LIEBE &amp; LAYTON, NTIA 
+REPORT 87-224 (1987) SELF-BROADENED CONTINUUM BASED ON 
+LIEBE ET AL, AGARD CONF. PROC. 542 (MAY 1993), 
+BUT READJUSTED FOR LINE SHAPE OF
+CLOUGH et al, ATMOS. RESEARCH V.23, PP.229-241 (1989).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.atmosphere.atmosphere.cloudabs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cloudabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lwc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tk</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.atmosphere.atmosphere.cloudabs" title="Permalink to this definition"></a></dt>
+<dd><p>Computes absorption in nepers/km by suspended water droplets from 
+dielectric expressions of Liebe, Hufford and Manabe
+(Int. J. IR &amp; MM Waves v.12(17) July 1991</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq</strong> – Frequency in MHz</p></li>
+<li><p><strong>lwc</strong> – Cloud liquid bulk density in kg/m^3</p></li>
+<li><p><strong>tk</strong> – Temperature in K</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Cloud absorption in 1/km</p>
+</dd>
+</dl>
+<p>Originally written by P. Rosenkranz. Use of other water dielectric constants here
+would give a similar answer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ocean.html" class="btn btn-neutral float-left" title="Ocean Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ionosphere.html" class="btn btn-neutral float-right" title="Ionosphere Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

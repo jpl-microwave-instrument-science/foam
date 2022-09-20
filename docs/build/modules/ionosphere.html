@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ionosphere Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sky Module" href="sky.html" />
+    <link rel="prev" title="Atmosphere Module" href="atmosphere.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ionosphere</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-foam.ionosphere">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Ionosphere Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/ionosphere.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ionosphere-module">
+<h1>Ionosphere Module<a class="headerlink" href="#ionosphere-module" title="Permalink to this headline"></a></h1>
+<p>The Ionosphere module defines the ionosphere object, which loads physical characteristics and defines functions relevant to the propagation of polarimetric microwave radiation through the ionosphere. Currently, this module is only used to determine the Faraday rotation angle for a given magnetic field, ionospheric TEC, and observing frequency.</p>
+<p>Ionospheric TEC maps can either be loaded from ancillary data such as <a class="reference external" href="https://cddis.nasa.gov/Data_and_Derived_Products/GNSS/atmospheric_products.html">CDDIS GNSS TEC products</a> or generated using the International Reference Ionosphere (via the iri2016 package). The iri2016 package is currently an optional dependency. This module also computes the magnetic field strength using a Python adaptation of the World Magnetic Model written by Christopher Weiss <a class="reference external" href="https://github.com/cmweiss/geomag">https://github.com/cmweiss/geomag</a>. Due to its relatively small size, the geomag package has been incorporated into FOAM directly (i.e. no pip install dependency). It has also been modified to support numpy arrays.</p>
+<section id="module-foam.ionosphere">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-foam.ionosphere" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.ionosphere.ionosphere">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.ionosphere.</span></span><span class="sig-name descname"><span class="pre">ionosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime='2015-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tec_file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag_file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tec_reader=&lt;class</span> <span class="pre">'foam.utils.reader.IONEXReader'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tec_reader_kwargs=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IRI=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ionosphere.ionosphere" title="Permalink to this definition"></a></dt>
+<dd><p>The ionosphere class reads maps of Total Electron Content (TEC) from CDDIS ancillary files
+or simulates these maps using the IRI2016 package</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datetime</strong> – Either a single date or a pair of dates bracketing an interval of time
+Several formats are permissible, such as
+- String or iterable of strings
+- Python datetime or iterable of datetimes 
+- Numpy datetime64 or iterable
+- Pandas timestamp or iterable</p></li>
+<li><p><strong>online</strong> – If true, ionospheric data is downloaded from CDDIS servers based on the datetime parameter.</p></li>
+<li><p><strong>tec_file</strong> – Filename for a CDDIS ionosphere TEC map. If None, the FOAM cache default is used</p></li>
+<li><p><strong>mag_file</strong> – Filename for World Magnetic Model coefficients, If None, the FOAM cache default is used</p></li>
+<li><p><strong>tec_reader</strong> – Reader object for TEC, default is IONEXReader</p></li>
+<li><p><strong>IRI</strong> – If true, ionospheric TEC is simulated using the IRI2016 package. 
+This mode is very experimental, and subject to be removed</p></li>
+<li><p><strong>verbose</strong> – If true, prints verbose output</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ionosphere.ionosphere.read_ionosphere">
+<span class="sig-name descname"><span class="pre">read_ionosphere</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.ionosphere.ionosphere.read_ionosphere" title="Permalink to this definition"></a></dt>
+<dd><p>Reads ionospheric state</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ionosphere.ionosphere.make_ionosphere">
+<span class="sig-name descname"><span class="pre">make_ionosphere</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.ionosphere.ionosphere.make_ionosphere" title="Permalink to this definition"></a></dt>
+<dd><p>Uses the IRI2016 implementation of the International Reference Ionosphere (<a class="reference external" href="http://irimodel.org/">http://irimodel.org/</a>)
+to generate maps of ionospheric TEC. Due to the slow speed of IRI runs, this is only done for a single time</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ionosphere.ionosphere.faraday_rotation">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">faraday_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">far_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TB</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ionosphere.ionosphere.faraday_rotation" title="Permalink to this definition"></a></dt>
+<dd><p>Applies faraday rotation to the polarized brightness temperatures</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>far_angle</strong> – Angle of rotation in radians</p></li>
+<li><p><strong>TB</strong> – Block matrix of polarimetric brightness temperatures [TBV, TBH, U, V] (Size 4xMx…)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ionosphere.ionosphere.compute_faraday_angle">
+<span class="sig-name descname"><span class="pre">compute_faraday_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ionosphere.ionosphere.compute_faraday_angle" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the angle of ionospheric faraday rotation for polarized microwave emission.
+This calculation uses a Python adaptation of the World Magnetic Model written by Christopher Weiss 
+<a class="reference external" href="https://github.com/cmweiss/geomag">https://github.com/cmweiss/geomag</a>. Due to its relatively small size, the geomag package has been 
+included directly with FOAM without requiring a download. It has also been modified to support numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Measurement frequency in MHz (shape N)</p></li>
+<li><p><strong>time</strong> – String or array of times, converted to interpolator
+epoch reference if in_epoch=False</p></li>
+<li><p><strong>lat</strong> – Latitude in degrees</p></li>
+<li><p><strong>lon</strong> – Longitude in degrees</p></li>
+<li><p><strong>theta</strong> – Radiometer elevation angle in degrees</p></li>
+<li><p><strong>phi</strong> – Radiometer azimuth angle in degrees</p></li>
+<li><p><strong>in_epoch</strong> – See above</p></li>
+<li><p><strong>use_time</strong> – Toggles use of time in case of heterogeneous ancillary data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Faraday rotation angle in radians (shape Nx…)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="atmosphere.html" class="btn btn-neutral float-left" title="Atmosphere Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sky.html" class="btn btn-neutral float-right" title="Sky Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

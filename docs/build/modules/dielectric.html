@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dielectric Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spacecraft Module" href="spacecraft.html" />
+    <link rel="prev" title="Sky Module" href="sky.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sky.html">Sky</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Dielectric Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/dielectric.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dielectric-module">
+<h1>Dielectric Module<a class="headerlink" href="#dielectric-module" title="Permalink to this headline"></a></h1>
+<p>The Dielectric module contains models of the dielectric constants for different materials.
+In addition to including several models for saline water, ice and soil models are also included.</p>
+<span class="target" id="module-foam.dielectric"></span><dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.h2o_liquid_KleinSwift">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">h2o_liquid_KleinSwift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salinity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.h2o_liquid_KleinSwift" title="Permalink to this definition"></a></dt>
+<dd><p>Model from Klein and Swift 1977 for sea water dielectric constant. 
+Valid for frequencies lower than 50 GHz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>temperature</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>salinity</strong> – Salinity in psu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Liquid water dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.h2o_liquid_MeissnerWentz">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">h2o_liquid_MeissnerWentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salinity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.h2o_liquid_MeissnerWentz" title="Permalink to this definition"></a></dt>
+<dd><p>Model from Meissner and Wentz 2004 &amp; 2012 for sea water dielectric constant</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>temperature</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>salinity</strong> – Salinity in psu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Liquid water dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.h2o_liquid_Ellison">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">h2o_liquid_Ellison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salinity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.h2o_liquid_Ellison" title="Permalink to this definition"></a></dt>
+<dd><p>Model from Ellison as discussed by Maetzler 2006 - <em>Thermal Microwave Radiation: Applications for Remote Sensing</em>
+and Ulaby and Long 2014 - <em>Microwave Radar and Radiometric Remote Sensing</em> books.
+Similar formulation to the Meissner and Wentz model.
+Valid for 0-30 C, salinity less than 40 parts per thousand, frequencies lower than 1 THz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>temperature</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>salinity</strong> – Salinity in psu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Liquid water dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.h2o_liquid_Boutin">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">h2o_liquid_Boutin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salinity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.h2o_liquid_Boutin" title="Permalink to this definition"></a></dt>
+<dd><p>Model for seawater dielectric constant from Boutin et al. 2020.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>temperature</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>salinity</strong> – Salinity in psu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Liquid water dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.h2o_liquid_Zhou">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">h2o_liquid_Zhou</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salinity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.h2o_liquid_Zhou" title="Permalink to this definition"></a></dt>
+<dd><p>Model for seawater dielectric constant from Zhou et al. 2021.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>temperature</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>salinity</strong> – Salinity in psu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Liquid water dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.foam_Stogryn">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">foam_Stogryn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.foam_Stogryn" title="Permalink to this definition"></a></dt>
+<dd><p>From the empirical polarized foam <em>emissivity</em> (not dielectric constant) model of Stogryn 1972</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>angle</strong> – Satellite look angle in degrees off nadir</p></li>
+</ul>
+</dd>
+</dl>
+<p>Anguelova parameterization will be added in the future</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.h2o_ice_Maetzler">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">h2o_ice_Maetzler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">salinity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.h2o_ice_Maetzler" title="Permalink to this definition"></a></dt>
+<dd><p>Computes permittivity of impure ice from Maetzler 2006. The model was developed for salinity around 0.013 PSU,
+and extrapolation is based on linear assumption to salinity, so over-extrapolation isn’t recommended.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>temperature</strong> – Temperature in Kelvin</p></li>
+<li><p><strong>salinity</strong> – Salinity in psu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Ice dielectric constant</p>
+</dd>
+</dl>
+<p>Code and documentation modified from the Snow Microwave Radiative Transfer Model (SMRT) 
+<a class="reference external" href="https://www.smrt-model.science/">https://www.smrt-model.science/</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.soil_dobson">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">soil_dobson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moisture</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">296</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.soil_dobson" title="Permalink to this definition"></a></dt>
+<dd><p>Soil model from Dobson et al. 1985 as presented in Ulaby and Long 2014</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>moisture</strong> – Volumetric soil moisture in g/cm3</p></li>
+<li><p><strong>sand</strong> – Sand fraction of soil</p></li>
+<li><p><strong>clay</strong> – Clay fraction of soil</p></li>
+<li><p><strong>temperature</strong> – Soil temperature in K</p></li>
+<li><p><strong>density</strong> – Soil density in g/cm3</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soil dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.soil_peplinski">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">soil_peplinski</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moisture</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">296</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.soil_peplinski" title="Permalink to this definition"></a></dt>
+<dd><p>Soil model from Dobson et al. 1985 with Peplinski 1995 conductivity term
+The modified conductivity term is specifically relevant for frequencies between 0.3 - 1.3 GHz</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>moisture</strong> – Volumetric soil moisture in g/cm3</p></li>
+<li><p><strong>sand</strong> – Sand fraction of soil</p></li>
+<li><p><strong>clay</strong> – Clay fraction of soil</p></li>
+<li><p><strong>temperature</strong> – Soil temperature in K</p></li>
+<li><p><strong>density</strong> – Soil density in g/cm3</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soil dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.soil_modified_dobson">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">soil_modified_dobson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moisture</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clay</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.soil_modified_dobson" title="Permalink to this definition"></a></dt>
+<dd><p>Soil model from Dobson et al. 1985 with modification from the Aquarius Algorithm
+Theoretical Basis Document. Performs better for wet soil</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>moisture</strong> – Volumetric soil moisture in g/cm3</p></li>
+<li><p><strong>sand</strong> – Sand fraction of soil</p></li>
+<li><p><strong>clay</strong> – Clay fraction of soil</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soil dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.soil_hallikainen">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">soil_hallikainen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moisture</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clay</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.soil_hallikainen" title="Permalink to this definition"></a></dt>
+<dd><p>L Band soil model from Hallikainen et al. 1985 as discussed in the Aquarius ATBD. 
+Performs better for dry soil.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>moisture</strong> – Volumetric soil moisture in g/cm3</p></li>
+<li><p><strong>sand</strong> – Sand fraction of soil</p></li>
+<li><p><strong>clay</strong> – Clay fraction of soil</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soil dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.dielectric.soil_wang">
+<span class="sig-prename descclassname"><span class="pre">foam.dielectric.</span></span><span class="sig-name descname"><span class="pre">soil_wang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moisture</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.dielectric.soil_wang" title="Permalink to this definition"></a></dt>
+<dd><p>L Band soil model from Le Vine and Kao 1997 and Wang 1980. Performs better for wet soil</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>moisture</strong> – Volumetric soil moisture in g/cm3</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soil dielectric constant</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sky.html" class="btn btn-neutral float-left" title="Sky Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spacecraft.html" class="btn btn-neutral float-right" title="Spacecraft Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>form_galaxy_tables &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="FOAM Utilities" href="../utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules/ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/solver.html">Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../utils.html">Utilities</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">form_galaxy_tables</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../utils.html">FOAM Utilities</a> &raquo;</li>
+      <li><code class="code docutils literal notranslate"><span class="pre">form_galaxy_tables</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/utils/form_galaxy_tables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="form-galaxy-tables">
+<h1><code class="code docutils literal notranslate"><span class="pre">form_galaxy_tables</span></code><a class="headerlink" href="#form-galaxy-tables" title="Permalink to this headline"></a></h1>
+<p><code class="code docutils literal notranslate"><span class="pre">form_galaxy_tables</span></code> is a script that is used to generate maps of wind-roughened galactic reflection from ocean surfaces. The rationale and procedures for generating these maps is discussed below.</p>
+<p>At lower frequencies (&lt;3 GHz), the contribution of galactic reflection to measurements of microwave emission over the ocean becomes non-negligible. Models of galactic emission and its reflection from the ocean have been previously developed for L Band radiometer missions such as Aquarius. These models are subtracted from satellite measurements to obtain a higher accuracy brightness temperature from which ocean state parameters can be inferred. For Aquarius, a map of L Band galactic brightness temperature was compiled from ground-based sky surveys. This map is shown below with the cosmic microwave background term subtracted.</p>
+<img alt="../_images/gal_map.png" src="../_images/gal_map.png" />
+<p>If the ocean surface was flat, then the contribtuion of reflected galactic radiation could be determined via specular reflection. Unfortunately, this is not the case, as winds over the ocean will roughen the surface. In the subsequent discussion, we will consider several coordinate systems. The first is the celestial equatorial coordinate system, which defines the position of astronomical objects referenced to the J2000 epoch. The location of astronomical objects is defined by their right ascension (similar to azimuth) and declination (similar to elevation), which remain relatively constant as the Earth rotates. The second is the terrestrial reference frame, which rotates with the Earth. At J2000, the equatorial and terrestrial frames are equivalent, with the x axis pointing through the intersection of the equator and prime meridian and the z axis pointing through the geographic north pole. The third is the local reference frame, which is defined following the convention of Yueh 1997. In this convention, the z axis points normal to the Earth’s surface and the x axis points in the downwind direction (i.e. the direction in which the wind blows).</p>
+<p>As a first order approximation, the wind-roughened ocean surface has been described as a collection of tilted facets in the local reference frame, each of which is a specular reflector. The density of facets with a particular slope (<span class="math notranslate nohighlight">\(S_x, S_y\)</span>) within a spatial region measured by radiometer instrument can be modeled using a Gaussian distribution</p>
+<div class="math notranslate nohighlight">
+\[P(S_x, S_y) = \frac{e^{-\frac{S_x^2 + S_y^2}{\sigma^2}}}{\pi \sigma^2}\]</div>
+<p>The Aquarius ATBD assumes a simplified variance <span class="math notranslate nohighlight">\(\sigma\)</span> as a scalar function of wind speed (<span class="math notranslate nohighlight">\(W\)</span>) and frequency (<span class="math notranslate nohighlight">\(f\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = 0.0029 W \textrm{log}_{10}(2f)\]</div>
+<p>The slopes of a given facet can also be determined from the following relationship with the facet normal vector in the local reference frame.</p>
+<div class="math notranslate nohighlight">
+\[\overrightarrow{n} = \frac{-S_x \hat{x} -S_y \hat{y} + \hat{z}}{\sqrt{S_x^2 + S_y^2 + 1}}\]</div>
+<p>Now that we have an idea of how the roughened ocean surface behaves in response to wind, we can determine the scattering behavior. In the local coordinate system, galactic microwave radiation propagates towards Earth with a direction vector <span class="math notranslate nohighlight">\(k_i\)</span> and the scattered radiation propagates away from Earth with a direction vector <span class="math notranslate nohighlight">\(k_s\)</span>. The scattered brightness temperature in the <span class="math notranslate nohighlight">\(k_s\)</span> direction is as follows (from Wentz 1978).</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}T_B^\overrightarrow{k_s} = \int\int \Gamma(k_i, k_s) T_B^\overrightarrow{k_i} dk^x_i dk^y_i\\dk^x_i dk^y_i = \textrm{cos}\theta d\theta d\phi\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta=0\)</span> points upwards from the surface. The scattering function is defined as follows using mixed slope and local coordinates.</p>
+<div class="math notranslate nohighlight">
+\[\Gamma(k_i, k_s) = \frac{P_z \left(S_x, S_y \right)}{4 \left(\overrightarrow{k_s} \cdot \overrightarrow{z}\right)\left(\overrightarrow{k_i} \cdot \overrightarrow{z}\right)}\Upsilon\]</div>
+<p>The <span class="math notranslate nohighlight">\(\Upsilon\)</span> term describes the polarization of the scattered radiation in terms of the initial polarization</p>
+<div class="math notranslate nohighlight">
+\[\Upsilon = \left|\overrightarrow{P_s^*} \cdot \overrightarrow{H_s}\right|^2 \left|R_h\right|^2 + \left|\overrightarrow{P_s^*} \cdot \overrightarrow{V_s}\right|^2 \left|R_v\right|^2\]</div>
+<p>To obtain the approximation maps used by FOAM in celestial equatorial coordinates, it is most useful to have the integral terms be defined in this system. FOAM uses <code class="code docutils literal notranslate"><span class="pre">spiceypy</span></code>, a Python implementation of SPICE, to transform between celestial, terrestrial, and local reference frames. The current version of the code can be used to generate nadir-looking maps and will need to be modified to generate architecture specific tables.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../utils.html" class="btn btn-neutral float-left" title="FOAM Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solver Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FOAM Utilities" href="../utils.html" />
+    <link rel="prev" title="Spacecraft Module" href="spacecraft.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-foam.solver">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Solver Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/solver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solver-module">
+<h1>Solver Module<a class="headerlink" href="#solver-module" title="Permalink to this headline"></a></h1>
+<p>The <code class="code docutils literal notranslate"><span class="pre">solver</span></code> module defines the solver object, which computes ocean forward models and inverse models</p>
+<section id="module-foam.solver">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-foam.solver" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.solver.solver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.solver.</span></span><span class="sig-name descname"><span class="pre">solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ocean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atmosphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ionosphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver" title="Permalink to this definition"></a></dt>
+<dd><p>The solver object combines individual FOAM modules to form a full forward or inverse model. 
+The default for all inputs is ‘None’, and inputs that are not included in the solver 
+are not called. Appropriate defaults are used in their place.</p>
+<p>Function versions are included to facilitate ease of use with the spacecraft object</p>
+<p>Module inputs: 
+:param ocean: an ocean object
+:param atmosphere: an atmosphere object 
+:param ionosphere: an ionosphere object 
+:param sky: a sky object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.compute_TB">
+<span class="sig-name descname"><span class="pre">compute_TB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sun_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moon_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.compute_TB" title="Permalink to this definition"></a></dt>
+<dd><p>This function computes forward model brightness temperatures for the states of provided solver inputs</p>
+<p>Inputs: 
+:param frequency: Observing frequencies in MHz
+:param time: Time in reference coords
+:param lat: Latitudes in degrees 
+:param lon: Longitudes in degrees 
+:param theta: Surface elevation angle (zero is nadir) in degrees
+:param phi: Surface azimuth angle (zero is in orbit plane) in degrees 
+:param ra: Right ascension of reflected surface vector in degrees 
+:param dec: Declination of reflected surface vector in degrees
+:param sun_flag: Boolean array where sun is in path of reflected surface vector
+:param moon_flag: Boolean array where moon is in path of reflected surface vector</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.compute_spacecraft_TB">
+<span class="sig-name descname"><span class="pre">compute_spacecraft_TB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.compute_spacecraft_TB" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes ‘compute_TB’ using the output from the spacecraft.make_obs_grid 
+function.</p>
+<p>Inputs: 
+frequency - Observing frequencies in MHz 
+obs_dict - output of spacecraft.make_obs_grid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.compute_TB_map">
+<span class="sig-name descname"><span class="pre">compute_TB_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.compute_TB_map" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes compute_TB for a full map of the Earth’s surface with arbitrary 
+pointing information. Sky brightness assumes nadir reflection, and the sun and moon are 
+not included. The map mesh spacing can be manually defined</p>
+<p>Inputs:
+:param frequency: Frequency in MHz (dimension O)
+:param theta: Elevation angle of spacecraft with respect to surface normal
+:param phi: Azimuth angle of spacecraft with respect to surface normal
+:param mesh_spacing: Spacing of latitude and longitude mesh grids</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Polarimetric brightness temperatures 
+(dimension OxMxN) (M and N correspond to latitude and longitude)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.ancillary_pack">
+<span class="sig-name descname"><span class="pre">ancillary_pack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.ancillary_pack" title="Permalink to this definition"></a></dt>
+<dd><p>Assembles ancillary data from various objects in a form that can be read by the retrieval method</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.compute_manual_TB">
+<span class="sig-name descname"><span class="pre">compute_manual_TB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uwind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vwind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prwtr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lwtr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">airtemp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srfpres</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coldsky</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.compute_manual_TB" title="Permalink to this definition"></a></dt>
+<dd><p>This routine can be used for quick calculations of brightness temperature over the ocean, 
+and is used by the inversion routines to retrieve state variables from measurements</p>
+<p>Inputs: 
+:param frequency: Frequency in MHz
+:param sst: Sea surface temperature in Kelvin
+:param sss: Sea surface salinity in psu
+:param uwind: 10 meter U wind in m/s
+:param vwind: 10 meter V wind in m/s
+:param tau: Atmospheric optical depth (only if retrieved)
+:param tec: Ionospheric TEC (only if retrieved)
+:param coldsky: Galactic emission temperature in K
+:param lat: Latitude in degrees north
+:param theta: Incidence angle in degrees 
+:param phi: Azimuth angle in degrees 
+:param prwtr: Precipitable water vapor in kg/kg (for quick tau calculations)
+:param mag_field: Scalar magnetic field in nT</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.retrieval">
+<span class="sig-name descname"><span class="pre">retrieval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anc_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1400.])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([10])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['sss',</span> <span class="pre">'sst',</span> <span class="pre">'windspd',</span> <span class="pre">'prwtr',</span> <span class="pre">'lwtr',</span> <span class="pre">'tec',</span> <span class="pre">'coldsky']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.retrieval" title="Permalink to this definition"></a></dt>
+<dd><p>Inverse model to determine geophysical parameters from brightness temperature data. 
+The user can customize the retrieval process in several ways, as explained by the parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TB</strong> – Brightness temperature array with dimension MxNxO
+M - Dimension of Stokes vector (TBV, TBH, U, V)
+N - Number of frequency channels 
+O - Number of latitude/longitude pairs</p></li>
+<li><p><strong>bandwidth</strong> – Bandwidth in MHz</p></li>
+<li><p><strong>noise_figure</strong> – Receiver noise figure in dB</p></li>
+<li><p><strong>cal_noise</strong> – Optional noise source that can be added to NEDT</p></li>
+<li><p><strong>retrieve</strong> – A list of strings containing parameters that should be retrieved
+Options are: ‘sst’, ‘sss’, ‘windspd’, ‘tau’, ‘tec’ and ‘coldsky’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Integration_time</dt>
+<dd class="field-even"><p>Integration time in seconds</p>
+</dd>
+</dl>
+<p>Note: An alternate versioning scheme for TB is
+TB: Brightness temperature array with dimension MxNxOxP</p>
+<blockquote>
+<div><p>M - Dimension of Stokes vector (TBV, TBH, U, V)
+N - Number of frequency channels 
+O - Number of radiometer horns 
+P - Number of latitude/longitude pairs</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.solver.solver.parallel_retrieval">
+<span class="sig-name descname"><span class="pre">parallel_retrieval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anc_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1400.])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([10])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cal_noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retrieve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['sss',</span> <span class="pre">'sst',</span> <span class="pre">'windspd',</span> <span class="pre">'prwtr',</span> <span class="pre">'lwtr',</span> <span class="pre">'tec',</span> <span class="pre">'coldsky']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndiv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nproc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.solver.solver.parallel_retrieval" title="Permalink to this definition"></a></dt>
+<dd><p>Inverse model to determine geophysical parameters from brightness temperature data. 
+Uses multiprocessing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TB</strong> – Brightness temperature array with dimension MxNxO
+M - Dimension of Stokes vector (TBV, TBH, U, V)
+N - Number of frequency channels 
+O - Number of latitude/longitude pairs</p></li>
+<li><p><strong>bandwidth</strong> – Bandwidth in MHz</p></li>
+<li><p><strong>noise_figure</strong> – Receiver noise figure in dB</p></li>
+<li><p><strong>cal_noise</strong> – Optional noise source that can be added to NEDT</p></li>
+<li><p><strong>retrieve</strong> – A list of strings containing parameters that should be retrieved
+Options are: ‘sst’, ‘sss’, ‘windspd’, ‘tau’, ‘tec’ and ‘coldsky’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Integration_time</dt>
+<dd class="field-even"><p>Integration time in seconds</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="spacecraft.html" class="btn btn-neutral float-left" title="Spacecraft Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../utils.html" class="btn btn-neutral float-right" title="FOAM Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

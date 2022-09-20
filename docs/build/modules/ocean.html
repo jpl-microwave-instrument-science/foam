@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocean Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Atmosphere Module" href="atmosphere.html" />
+    <link rel="prev" title="Welcome to FOAM’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ocean</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-an-ocean-object">Setting Up an Ocean object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-foam.ocean">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Ocean Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/ocean.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ocean-module">
+<h1>Ocean Module<a class="headerlink" href="#ocean-module" title="Permalink to this headline"></a></h1>
+<p>The <code class="code docutils literal notranslate"><span class="pre">ocean</span></code> module defines the ocean object, which loads physical characteristics and defines functions relevant to the
+emission by and reflection of microwave radiation by the ocean surface. The <code class="code docutils literal notranslate"><span class="pre">ocean</span></code> module contains several different flavors of specular and wind-roughened ocean surface models.</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">ocean.ocean</span></code> base class returns a specular surface if <code class="code docutils literal notranslate"><span class="pre">mode='flat'</span></code> and returns a wind-roughened surface approximation if <code class="code docutils literal notranslate"><span class="pre">mode='rough'</span></code>. The wind-roughened model function is an interpolation of geophysical model functions developed by Remote Sensing Systems (Meissner and Wentz 2012, 2014). These model functions were developed at 1.4, 6.8, 10.7, 18.7, and 37 GHz from satellite microwave radiometer measurements, and they are extrapolated to lower frequencies assuming a zero intercept.</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">ocean.fastem</span></code> class implements the FASTEM-5 and FASTEM-6 ocean emissivity models developed by the European Centre for Medium-Range Weather Forecasts (Liu et al 2011, Kazumori and English 2016), which are numerical approximations to a two-scale emissivity model. These model are applicable at frequencies from 1.4 to 410 GHz, and are preferred for high-frequency sensing.</p>
+<p>The <code class="code docutils literal notranslate"><span class="pre">ocean.two_scale</span></code> implements a full two-scale model emissivity model originally developed by Simon Yueh at JPL in his 1997 paper. The default ocean surface roughness spectrum is that of Durden and Vesecky, but several parameterizations are included from the work of Paul Hwang at the Naval Research Laboratory. This surface emissivity model is the most computationally expensive.</p>
+<blockquote>
+<div><p><strong>Development note</strong>: <em>The current implementation of the two-scale model is relatively computationally inefficient, and its use is not recommended for large simulations. Future versions of the software should implement a revised two-scale model with improved performance</em></p>
+</div></blockquote>
+<p>Ocean ancillary data sources are discussed in the <code class="code docutils literal notranslate"><span class="pre">utils.reader</span></code> module documentation. The ocean object can also be specified using different dielectric constant modules, as discussed in the <code class="code docutils literal notranslate"><span class="pre">dielectric</span></code> module.</p>
+<section id="setting-up-an-ocean-object">
+<h2>Setting Up an Ocean object<a class="headerlink" href="#setting-up-an-ocean-object" title="Permalink to this headline"></a></h2>
+<p><code class="code docutils literal notranslate"><span class="pre">ocean</span></code> objects can be initialized using different ancillary data sources and dielectric constant modules, as discussed in the <code class="code docutils literal notranslate"><span class="pre">utils.reader</span></code> and <code class="code docutils literal notranslate"><span class="pre">dielectric</span></code> module documentation. An example initialization is shown below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">foam.ocean</span> <span class="kn">import</span> <span class="n">ocean</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">foam.dielectric</span> <span class="k">as</span> <span class="nn">dielectric</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1"># Pull data from online</span>
+<span class="linenos"> 5</span><span class="n">oc</span> <span class="o">=</span> <span class="n">ocean</span><span class="p">(</span><span class="n">datetime</span><span class="o">=</span><span class="s1">&#39;2015-01-01&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rough&#39;</span><span class="p">,</span> <span class="n">online</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos"> 6</span>           <span class="n">sst_reader</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">GHRSSTReader</span><span class="p">,</span> <span class="n">sst_reader_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;MUR&#39;</span><span class="p">},</span>
+<span class="linenos"> 7</span>           <span class="n">sss_reader</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">OISSSReader</span><span class="p">,</span> <span class="n">dielectric</span><span class="o">=</span><span class="n">dielectric</span><span class="o">.</span><span class="n">h2o_liquid_KleinSwift</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1"># Use data from cache</span>
+<span class="linenos">10</span><span class="c1"># or provide your own file using sst_file and sss_file</span>
+<span class="linenos">11</span><span class="n">oc</span> <span class="o">=</span> <span class="n">ocean</span><span class="p">(</span><span class="n">datetime</span><span class="o">=</span><span class="s1">&#39;2018-01-01&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rough&#39;</span><span class="p">,</span> <span class="n">online</span><span class="o">=</span><span class="kc">False</span>
+<span class="linenos">12</span>           <span class="n">dielectric</span><span class="o">=</span><span class="n">dielectric</span><span class="o">.</span><span class="n">h2o_liquid_Boutin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After initializing an ocean object, you can compute ocean surface emissivity <code class="code docutils literal notranslate"><span class="pre">ocean.get_ocean_emissivity</span></code> and brightness temperature <code class="code docutils literal notranslate"><span class="pre">ocean.get_ocean_TB</span></code></p>
+</section>
+<section id="module-foam.ocean">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-foam.ocean" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.ocean.ocean">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">ocean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime='2015-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode='flat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst_file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst_reader=&lt;class</span> <span class="pre">'foam.utils.reader.GHRSSTReader'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst_reader_kwargs=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss_file=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss_reader=&lt;class</span> <span class="pre">'foam.utils.reader.OISSSReader'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss_reader_kwargs=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dielectric=&lt;function</span> <span class="pre">h2o_liquid_KleinSwift&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.ocean" title="Permalink to this definition"></a></dt>
+<dd><p>Base class for generating an ocean forward model at a given state (temperature, salinity, surface winds)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datetime</strong> – Either a single date or a pair of dates bracketing an interval of time.
+Several formats are permissible, such as
+- String or iterable of strings
+- Python datetime or iterable of datetimes 
+- Numpy datetime64 or iterable
+- Pandas timestamp or iterable</p></li>
+<li><p><strong>mode</strong> – ‘flat’ mode implements a specular ocean surface
+‘rough’ mode interpolates the Meissner/Wentz GMFs for wind-roughening</p></li>
+<li><p><strong>online</strong> – Toggles online functionality</p></li>
+<li><p><strong>sst_file</strong> – Sea surface temperature file location. Default is ‘cache’, which reads a stock file  
+from the cache.</p></li>
+<li><p><strong>sss_file</strong> – Sea surface salinity file location. Default is ‘cache’, which reads a stock file 
+from the cache.</p></li>
+<li><p><strong>sst_reader</strong> – File reader method, default is GHRSSTReader</p></li>
+<li><p><strong>sss_reader</strong> – File reader method, default is OISSSReader</p></li>
+<li><p><strong>verbose</strong> – Toggles verbosity</p></li>
+</ul>
+</dd>
+</dl>
+<p>Note that only one file per parameter is downloaded in the cache.</p>
+<p>For plotting convenience, arrays with geographic info are defined as they would appear on a map, 
+rows of decreasing latitude (90 -&gt; -90) and columns of increasing longitude (-180 -&gt; 180)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.ocean.read_ocean">
+<span class="sig-name descname"><span class="pre">read_ocean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.ocean.read_ocean" title="Permalink to this definition"></a></dt>
+<dd><p>Reads ocean state from online or local files. 
+Sets up RegularGridInterpolators which take arguments of lat and lon.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.ocean.read_land">
+<span class="sig-name descname"><span class="pre">read_land</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.ocean.read_land" title="Permalink to this definition"></a></dt>
+<dd><p>Reads EASE2 Grid 3 km landmask file. 
+Sets up a RegularGridInterpolator which takes arguments of lat and lon.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.ocean.get_ocean_TB">
+<span class="sig-name descname"><span class="pre">get_ocean_TB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.ocean.get_ocean_TB" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates emission temperature of the ocean from frequency, emission angle,
+and meshgrids of latitude and longitude. Type of all inputs should be
+numpy arrays</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz (dimension M)</p></li>
+<li><p><strong>time</strong> – String or array of times, converted to interpolator
+epoch reference if in_epoch=False</p></li>
+<li><p><strong>lat</strong> – Latitude in diegrees</p></li>
+<li><p><strong>lon</strong> – Longitude in degrees</p></li>
+<li><p><strong>uwind</strong> – E/W 10-m wind</p></li>
+<li><p><strong>vwind</strong> – N/S 10-m wind</p></li>
+<li><p><strong>theta</strong> – Elevation angle of spacecraft with respect to surface normal</p></li>
+<li><p><strong>phi</strong> – Azimuth angle of spacecraft with respect to surface normal</p></li>
+<li><p><strong>in_epoch</strong> – See above</p></li>
+<li><p><strong>use_time</strong> – Allows for bypass of time resolution in the case of heterogeneous time sources</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Full Stokes brightness temperatures and emissivity (dimension 4xMx…)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.ocean.get_ocean_emissivity">
+<span class="sig-name descname"><span class="pre">get_ocean_emissivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.ocean.get_ocean_emissivity" title="Permalink to this definition"></a></dt>
+<dd><p>Returns ocean emissivity. This is the specular surface emissivity if ocean.mode is ‘simple’, 
+and GMF wind-roughened emissivity if ocean.mode is ‘full’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>sst</strong> – Sea surface temperature in Kelvin</p></li>
+<li><p><strong>sss</strong> – Sea surface salinity in psu</p></li>
+<li><p><strong>uwind</strong> – 10-m eastward wind in m/s</p></li>
+<li><p><strong>vwind</strong> – 10-m northward wind in m/s</p></li>
+<li><p><strong>theta</strong> – Elevation angle of spacecraft with respect to surface normal</p></li>
+<li><p><strong>phi</strong> – Azimuth angle of spacecraft with respect to surface normal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Emissivity vector (eV, eH, U, V) (dimension 4x…)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.ocean.get_roughness_correction">
+<span class="sig-name descname"><span class="pre">get_roughness_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.ocean.get_roughness_correction" title="Permalink to this definition"></a></dt>
+<dd><p>Returns only excess emissivity due to wind roughening</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>sst</strong> – Sea surface temperature in Kelvin</p></li>
+<li><p><strong>sss</strong> – Sea surface salinity in psu</p></li>
+<li><p><strong>uwind</strong> – 10-m eastward wind in m/s</p></li>
+<li><p><strong>vwind</strong> – 10-m northward wind in m/s</p></li>
+<li><p><strong>theta</strong> – Elevation angle of spacecraft with respect to surface normal</p></li>
+<li><p><strong>phi</strong> – Azimuth angle of spacecraft with respect to surface normal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Excess emissivity vector (eV, eH, U, V) (dimension 4x…)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.ocean.fastem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">fastem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.fastem" title="Permalink to this definition"></a></dt>
+<dd><p>FASTEM ocean emissivity models from 1.4 - 410 GHz. Developed by ECMWF and translated to Python.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>version</strong> – Either ‘5’ or ‘6’ (default). See Kazumori and English 2015 for differences</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.fastem.read_ocean">
+<span class="sig-name descname"><span class="pre">read_ocean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.fastem.read_ocean" title="Permalink to this definition"></a></dt>
+<dd><p>Reads ocean state from online or local files. 
+Sets up RegularGridInterpolators which take arguments of lat and lon.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.fastem.get_ocean_emissivity">
+<span class="sig-name descname"><span class="pre">get_ocean_emissivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.fastem.get_ocean_emissivity" title="Permalink to this definition"></a></dt>
+<dd><p>FASTEM emissivity models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz (dimension O)</p></li>
+<li><p><strong>sst</strong> – Sea surface temperature in Kelvin (dimension MxN)</p></li>
+<li><p><strong>sss</strong> – Sea surface salinity in psu (dimension MxN)</p></li>
+<li><p><strong>uwind</strong> – 10-m eastward wind in m/s</p></li>
+<li><p><strong>vwind</strong> – 10-m northward wind in m/s</p></li>
+<li><p><strong>theta</strong> – Elevation angle of spacecraft with respect to surface normal</p></li>
+<li><p><strong>phi</strong> – Azimuth angle of spacecraft with respect to surface normal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return emis</dt>
+<dd class="field-even"><p>Emissivity vector (eV, eH, U, V) (dimension 4xOxMxN)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.ocean.two_scale">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">two_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Durden-Vesecky'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.two_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Implements two-scale ocean surface model and associated reflections</p>
+<p><strong>Development note</strong>: <em>The current implementation of the two-scale model is relatively computationally inefficient, 
+and its use is not recommended for large simulations. 
+Future versions of the software should implement a revised two-scale model with improved performance</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spectrum</strong> – <p>Specifies isotropic ocean spectrum model. 
+Options are: ‘Durden-Vesecky’, ‘Pierson-Moskowitz’,</p>
+<blockquote>
+<div><p>’JONSWAP’, ‘Donelan’, or ‘General’</p>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+<p>Several modules are translated from Simon Yueh’s original two-scale code in Fortran</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.ocean.two_scale.get_ocean_emissivity">
+<span class="sig-name descname"><span class="pre">get_ocean_emissivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vwind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nproc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.two_scale.get_ocean_emissivity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates emissivity for a wind-roughened ocean surface using a two-scale model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz (dimension O)</p></li>
+<li><p><strong>sst</strong> – Sea surface temperature in Kelvin (dimension MxN)</p></li>
+<li><p><strong>sss</strong> – Sea surface salinity in psu (dimension MxN)</p></li>
+<li><p><strong>uwind</strong> – 10-m eastward wind in m/s (dimension MxN)</p></li>
+<li><p><strong>vwind</strong> – 10-m northward wind in m/s (dimension MxN)</p></li>
+<li><p><strong>theta</strong> – Topocentric elevation angle in degrees</p></li>
+<li><p><strong>phi</strong> – Topocentric azimuth angle in degrees</p></li>
+<li><p><strong>cutoff_factor</strong> – Changes the scale cutoff wavelength.
+Default is 3 (e.g. k0/3 is the cutoff).
+See Yueh et al. 1997</p></li>
+<li><p><strong>parallel</strong> – If True, compute in parallel (default False)</p></li>
+<li><p><strong>nproc</strong> – Number of parallel processes (default 4)</p></li>
+<li><p><strong>Ns</strong> – Extent of the integrals (Ns * std. dev. of the distribution)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return emisV, emisH, U, V</dt>
+<dd class="field-even"><p>Stokes vector emissivity (dimension (OxMxN))</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.speed_10m_to_friction">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">speed_10m_to_friction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hwang'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.speed_10m_to_friction" title="Permalink to this definition"></a></dt>
+<dd><p>Converts 10m-winds to wind friction</p>
+<p>‘yueh’ method is a polynomial fit to an iterative calculation procedure written
+by Simon Yueh, and the ‘hwang’ method implements Paul Hwang’s drag coefficient
+for 10-m winds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wind</strong> – 10-meter wind speed in m/s (must be an array)</p></li>
+<li><p><strong>method</strong> – Calculation method of ‘hwang’ or ‘yueh’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.friction_to_speed">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">friction_to_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">friction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.friction_to_speed" title="Permalink to this definition"></a></dt>
+<dd><p>Convert wind friction to velocity using formula from Yueh 1997
+:param friction: Wind friction
+:param z: Height of output wind speed</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.spectrum_PM">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">spectrum_PM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.spectrum_PM" title="Permalink to this definition"></a></dt>
+<dd><p>Isotropic surface spectrum of Pierson and Moskowitz 1964</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Ocean wavenumber (rad/m)</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed (m/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wavenumber spectrum in m^3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.spectrum_DV">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">spectrum_DV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.spectrum_DV" title="Permalink to this definition"></a></dt>
+<dd><p>Isotropic surface spectrum of Durden and Vesecky 1985</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Ocean wavenumber (rad/m)</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed (m/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wavenumber spectrum in m^3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.spectrum_jonswap">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">spectrum_jonswap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.spectrum_jonswap" title="Permalink to this definition"></a></dt>
+<dd><p>Isotropic surface spectrum derived from JONSWAP measurements</p>
+<p>Fetch term removed by setting the center frequency equal to the PM spectrum
+for a fully developed ocean surface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Ocean wavenumber (rad/m)</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed (m/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wavenumber spectrum in m^3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.spectrum_donelan">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">spectrum_donelan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.spectrum_donelan" title="Permalink to this definition"></a></dt>
+<dd><p>Isotropic surface spectrum of Donelan et al. 1985</p>
+<p>Fetch term removed by setting the center frequency equal to the PM spectrum
+for a fully developed ocean surface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Ocean wavenumber (rad/m)</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed (m/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wavenumber spectrum in m^3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.spectrum_general">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">spectrum_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_g</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.spectrum_general" title="Permalink to this definition"></a></dt>
+<dd><p>Isotropic general model surface spectrum from Hwang 2017</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Ocean wavenumber (rad/m)</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed (m/s)</p></li>
+<li><p><strong>s_g</strong> – Variable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Wavenumber spectrum in m^3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.get_spectrum">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">get_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Durden-Vesecky'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.get_spectrum" title="Permalink to this definition"></a></dt>
+<dd><p>Returns direction dependent ocean spectrum
+Choice of isotropic spectrum specified by model 
+See Yueh 1997</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> – Ocean wavenumber in 1/m</p></li>
+<li><p><strong>phi</strong> – Look angle azimuth in radians</p></li>
+<li><p><strong>wind</strong> – 10-m wind in m/s</p></li>
+<li><p><strong>c</strong> – C parameter for directional spectrum
+costly to compute, so provided as an arg</p></li>
+<li><p><strong>model</strong> – <p>Isotropic spectrum model
+Options are: ‘Durden-Vesecky’ (default)</p>
+<blockquote>
+<div><p>’Pierson-Moskowitz’
+‘JONSWAP’
+‘Donelan’
+‘General’</p>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.slope_to_normal">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">slope_to_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psiy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.slope_to_normal" title="Permalink to this definition"></a></dt>
+<dd><p>Used to calculate the direction of the surface 
+normal given the slope angle.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param psix</dt>
+<dd class="field-odd"><p>angle of the slope in x for the local plane</p>
+</dd>
+<dt class="field-even">param psiy</dt>
+<dd class="field-even"><p>angle of the slope in y for the local plane</p>
+</dd>
+<dt class="field-odd">return</dt>
+<dd class="field-odd"><p>thetan - zenith angle of surface normal
+phin - azimuth angle of surface normal</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.pdf_slope">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">pdf_slope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Su2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sc2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.pdf_slope" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the pdf of the slope of the large scale
+surface which is assumed to be Gaussian.
+This PDF was used by S. Durden for his two scale theory
+for a large scale surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Su2</strong> – Slope variance in x (up-wind)</p></li>
+<li><p><strong>Sc2</strong> – Slope variance in y (cross-wind)</p></li>
+<li><p><strong>Zx</strong> – Slope in x (up-wind)</p></li>
+<li><p><strong>Zy</strong> – Slope in y (cross-wind)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Slope PDF</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.cox_munk_variance">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">cox_munk_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.cox_munk_variance" title="Permalink to this definition"></a></dt>
+<dd><p>Slope variance expressions of Cox and Munk</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>wind</strong> – 10-m wind speed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Su2 - Slope variance in up wind direction
+Sc2 - Slope variance in cross wind direction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.slope_variance">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">slope_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Durden-Vesecky'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.slope_variance" title="Permalink to this definition"></a></dt>
+<dd><p>Used to numerically calculate the variances of 
+the large scale surface with a given cutoff frequency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kd</strong> – high frequency cutoff for the large scale wave</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Su2 - Slope variance in up wind direction
+Sc2 - Slope variance in cross wind direction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.angle_pol_trans">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">angle_pol_trans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psiy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.angle_pol_trans" title="Permalink to this definition"></a></dt>
+<dd><p>This routine is used to covert the incident direction
+in principal frame to local frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> – zenith angle</p></li>
+<li><p><strong>phi</strong> – polar angle</p></li>
+<li><p><strong>psix</strong> – angle of the slope in x for the local plane</p></li>
+<li><p><strong>psiy</strong> – angle of the slope in y for the local plane</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>thetal - local zenith angle</p>
+<p>phil - local azimuth angle</p>
+<p>hh - vector product of h pol. vector and h’’ pol. vector</p>
+<p>hv - vector product of h pol. vector and v’’ pol. vector</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.foam_fraction">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">foam_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.foam_fraction" title="Permalink to this definition"></a></dt>
+<dd><p>Foam parameterization from Hwang 2012</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>wind</strong> – 10-m wind speed (m/s)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Foam fraction for that wind speed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.R_coherent">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">R_coherent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thetai</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Durden-Vesecky'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.R_coherent" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the coherent reflectivity coefficients for Bragg scattering 
+using the small perturbation method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thetai</strong> – Incident elevation angle</p></li>
+<li><p><strong>phii</strong> – Incident azimuth angle</p></li>
+<li><p><strong>eps</strong> – Surface dielectric constant</p></li>
+<li><p><strong>k0</strong> – Electromagnetic wavenumber</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>Rh0, Rv0 - Specular reflectivities for H and V pol</p>
+<p>shh, svh, svv, shv - Second order coherent reflection co-pol and cross-pol terms</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="foam.ocean.R_incoherent">
+<span class="sig-prename descclassname"><span class="pre">foam.ocean.</span></span><span class="sig-name descname"><span class="pre">R_incoherent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thetal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phil</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Durden-Vesecky'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.ocean.R_incoherent" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the incoherent reflectivity from a 
+slightly perturbed Gaussian random rough surface
+with ocean spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thetal</strong> – local observing polar angle</p></li>
+<li><p><strong>phil</strong> – local observing azimuth angle</p></li>
+<li><p><strong>eps</strong> – permittivity of lower half space medium</p></li>
+<li><p><strong>k0</strong> – free space electromagnetic wavenumber</p></li>
+<li><p><strong>wind</strong> – 10m wind speed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Rx - Incoherent reflectivity</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to FOAM’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="atmosphere.html" class="btn btn-neutral float-right" title="Atmosphere Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

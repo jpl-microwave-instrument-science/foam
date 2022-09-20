@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reader Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="form_galaxy_tables" href="form_galaxy_tables.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules/ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/solver.html">Solver</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../utils.html">Utilities</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="form_galaxy_tables.html">form_galaxy_tables</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">reader</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../utils.html">FOAM Utilities</a> &raquo;</li>
+      <li>Reader Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/utils/reader.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reader-module">
+<h1>Reader Module<a class="headerlink" href="#reader-module" title="Permalink to this headline"></a></h1>
+<p>The reader module contains API for accessing ancillary data from archive centers.</p>
+<span class="target" id="module-foam.utils.reader"></span><dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.Reader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">Reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.Reader" title="Permalink to this definition"></a></dt>
+<dd><p>Base class for reading from FOAM ancillary data sources</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datetime</strong> – Single or tuple of Python datetime object or time string</p></li>
+<li><p><strong>online</strong> – Reads from OpenDAP servers if True</p></li>
+<li><p><strong>file</strong> – Reads a single, user-provided file if online is False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.GHRSSTReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">GHRSSTReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MUR'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.GHRSSTReader" title="Permalink to this definition"></a></dt>
+<dd><p>Group for High Resolution Sea Surface Temperature (GHRSST)
+L4 SST blended analysis data with 1 day time resolution
+Several flavors are available: 
+MUR: JPL Multiscale Ultrahigh Resolution</p>
+<blockquote>
+<div><p>0.25 deg: MUR
+0.01 deg: MUR_highres</p>
+</div></blockquote>
+<dl class="simple">
+<dt>GAMSSA: ABOM product</dt><dd><p>0.25 deg: GAMSSA</p>
+</dd>
+<dt>OSTIA: UKMO product </dt><dd><p>0.05 deg: OSTIA</p>
+</dd>
+<dt>AVHRR_OI: NCEI product </dt><dd><p>0.25 deg, 1981-2020: NCEI_v2
+0.25, 2016-2022: NCEI_v2.1</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>version</strong> – See above</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.SMAPSalinityReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">SMAPSalinityReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.SMAPSalinityReader" title="Permalink to this definition"></a></dt>
+<dd><p>SMAP L3 produced by JPL 
+SSS data with 1 day time resolution
+and 0.25 deg. grid resolution</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.AquariusSalinityReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">AquariusSalinityReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.AquariusSalinityReader" title="Permalink to this definition"></a></dt>
+<dd><p>Aquarius L3 produced by JPL 
+SSS data with 1 day time resolution and 1 deg. grid resolution</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.OISSSReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">OISSSReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.OISSSReader" title="Permalink to this definition"></a></dt>
+<dd><p>Multi-mission Optimally Interpolated SSS analysis</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.HYCOMReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">HYCOMReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sea_ice</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">90,</span> <span class="pre">90)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">360)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.HYCOMReader" title="Permalink to this definition"></a></dt>
+<dd><p>HYCOM GOFS SST and SSS analysis 
+with 3 hr and 0.08 deg lon x 0.04 deg lat resolution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sea_ice</strong> – Toggle return of sea ice fraction (default False)</p></li>
+<li><p><strong>lat_bounds</strong> – Tuple of latitude bounds for subsetting</p></li>
+<li><p><strong>lon_bounds</strong> – Tuple of longitude bounds for subsetting. 
+Note that HYCOM longitudes are indexed from 0 to 360</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Development note</strong>: 
+HYCOM files are large, and queries for a large time range may fail. Preliminary 
+attempts to access smaller chunks with dask have not been successful. In this case, 
+it is recommended that the user make calls to the HYCOMReader.get_dataset method 
+covering several shorter blocks, merging those files on system using xarray, and 
+using that merged file as an input in offline mode. 
+This may be implemented in the future.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.NCEPReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">NCEPReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">90,</span> <span class="pre">90)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">360)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_dask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.NCEPReader" title="Permalink to this definition"></a></dt>
+<dd><p>Reads NCEP atmospheric data in 2D (default) or 3D
+with 6 hour time resolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dimension</strong> – Either ‘2D’ (default) or ‘3D’</p></li>
+<li><p><strong>lat_bounds</strong> – Tuple of latitude bounds for subsetting</p></li>
+<li><p><strong>lon_bounds</strong> – Tuple of longitude bounds for subsetting.
+Note that HYCOM longitudes are indexed from 0 to 360</p></li>
+<li><p><strong>use_dask</strong> – Toggles dask-based loading (default False).
+Initial tests suggests dask is slower for small subsets, 
+but may be necessary for large ones</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Development note</strong>: 
+This method accesses NCEP data by chaining together the annual aggregates.
+This seems quicker so far than accessing the multi-year parameter aggregates</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.utils.reader.NCEPReader.make_height_index">
+<span class="sig-name descname"><span class="pre">make_height_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.NCEPReader.make_height_index" title="Permalink to this definition"></a></dt>
+<dd><p>Converts vertical indexing of 3D NCEP files from pressure-based to altitude-based</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.MERRAReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">MERRAReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">90,</span> <span class="pre">90)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-</span> <span class="pre">180,</span> <span class="pre">180)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_dask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.MERRAReader" title="Permalink to this definition"></a></dt>
+<dd><p>Reads MERRA-2 atmospheric data in 2D (default) or 3D 
+Instantaneous or time-averaged values can be requested, 
+with time-averaged being the default
+2D products have hourly resolution, and 3D products have 3 hour resolution
+Grid spacing is 0.625 deg.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dimension</strong> – Either ‘2D’ (default) or ‘3D’</p></li>
+<li><p><strong>instant</strong> – Either time-averaged (False, default) or 
+instantaneous (True) fields</p></li>
+<li><p><strong>lat_bounds</strong> – Tuple of latitude bounds for subsetting</p></li>
+<li><p><strong>lon_bounds</strong> – Tuple of longitude bounds for subsetting</p></li>
+<li><p><strong>use_dask</strong> – Toggles dask-based loading (default False).
+Initial tests suggests dask is slower for small subsets, 
+but may be necessary for large ones</p></li>
+</ul>
+</dd>
+</dl>
+<p>MERRA product codes: 
+- M2T1NXSLV: Time-averaged single-level diagnostics (2D)
+- M2I1NXASM: Instantaneous single-level diagnostics (2D)
+- M2T3NVASM: Time-averaged assimilated meterological fields (3D)
+- M2I3NVASM: Instantaneous assimilated meterological fields (3D)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.utils.reader.IONEXReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.utils.reader.</span></span><span class="sig-name descname"><span class="pre">IONEXReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">online</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.IONEXReader" title="Permalink to this definition"></a></dt>
+<dd><p>CDDIS Ionospheric Total Electron Content (TEC) from 
+<a class="reference external" href="https://cddis.nasa.gov/archive/gnss/products/ionex">https://cddis.nasa.gov/archive/gnss/products/ionex</a>
+No OpenDAP or THREDDS interface available, 
+so files are downloaded manually using curl and gzip</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.utils.reader.IONEXReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.IONEXReader.read" title="Permalink to this definition"></a></dt>
+<dd><p>Reads IONEX files and returns a scipy.interpolate.RegularGridInterpolator
+for ionospheric TEC</p>
+<p>Inputs: 
+:param from_dataset: If True, module assumes the input file is netcdf-like, else use ionex file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.utils.reader.IONEXReader.parse_ionex_map">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_ionex_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tecmap</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.utils.reader.IONEXReader.parse_ionex_map" title="Permalink to this definition"></a></dt>
+<dd><p>Parsing function for CDDIS TEC maps</p>
+<p>Inputs: 
+:param tecmap: File handle for CDDIS ionosphere map</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="form_galaxy_tables.html" class="btn btn-neutral float-left" title="form_galaxy_tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

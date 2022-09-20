@@ -1,0 +1,67 @@
+.. FOAM documentation master file, created by
+   sphinx-quickstart on Wed Jun 30 18:11:23 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to FOAM's documentation!
+================================
+
+
+The **Forward Ocean Atmosphere Microwave (FOAM)** package is a radiative transfer model that can be used to simulate polarimetric microwave radiometer observations of the ocean. FOAM permits simulations with variable levels of fidelity, from an ideal ocean to a more realistic one. 
+
+The core of the model is the :code:`ocean` module, which contains models for specular and wind-roughened oceans. Wind roughening is implemented for different ocean classes as
+
+- :code:`ocean.ocean`: interpolation of geophysical model functions (GMF) developed at discrete frequencies (e.g. papers by Meissner and Wentz). 
+- :code:`ocean.fastem`: the FASTEM-5 ocean emissivity model
+- :code:`ocean.two_scale`, a full two-scale model (originally developed by Simon Yueh). 
+
+This module is combined with the :code:`atmosphere`, :code:`ionosphere`, and :code:`sky` modules to create a full forward model, which is controlled at a high level by the :code:`models` module.
+
+The SPICE-based :code:`spacecraft` module can be used to simulate pointing information from an orbiting spacecraft
+
+Several modules can operate in an `online` mode and download ancillary data from OpenDAP servers based on a user-specified :code:`datetime` object. Details of the ancillary data sources can be found in module documentation.
+
+FOAM is <v1, so subsequent updates may signficantly alter workflow. Feel free to recommend changes that can improve the model via Github. If you notice any issues with FOAM, please raise an issue through GitHub or e-mail Alex Akins at alexander.akins@jpl.nasa.gov
+
+
+Installation and Development
+----------------------------
+
+To test FOAM, download the package from the repository and build locally using `pip install -e .`
+
+FOAM modules download ancillary data from OpenDAP servers hosted by DAACs and other sources.
+To use FOAM, the user must configure .netrc, .urs_cookies, and .dodsrc files in their home directories following the instructions at 
+https://disc.gsfc.nasa.gov/data-access.
+
+Before use, FOAM needs to build a local cache. Make sure you have wget and gzip installed on your machine, and execute the following in a Python terminal 
+
+.. code-block:: python 
+
+    import foam.utils.config as config 
+    config.setup_cache()
+    config.get_ancillary_data()
+
+This will setup the cache (.foam) in your home directory and download some ancillary data required to use FOAM offline. 
+
+There are several non-automated tests in the `tests/` directory that demonstrate use cases for each module. Any changes in the documentation can be compiled using :code:`sphinx-build -b html source build`
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: FOAM Module API:
+   
+   Ocean <modules/ocean.rst>
+   Atmosphere <modules/atmosphere.rst>
+   Ionosphere <modules/ionosphere.rst>
+   Sky <modules/sky.rst>
+   Dielectric <modules/dielectric.rst>
+   Spacecraft <modules/spacecraft.rst>
+   Solver <modules/solver.rst>
+   Utilities <utils.rst>
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

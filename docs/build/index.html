@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to FOAM’s documentation! &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ocean Module" href="modules/ocean.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/sky.html">Sky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/solver.html">Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to FOAM’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-foam-s-documentation">
+<h1>Welcome to FOAM’s documentation!<a class="headerlink" href="#welcome-to-foam-s-documentation" title="Permalink to this headline"></a></h1>
+<p>The <strong>Forward Ocean Atmosphere Microwave (FOAM)</strong> package is a radiative transfer model that can be used to simulate polarimetric microwave radiometer observations of the ocean. FOAM permits simulations with variable levels of fidelity, from an ideal ocean to a more realistic one.</p>
+<p>The core of the model is the <code class="code docutils literal notranslate"><span class="pre">ocean</span></code> module, which contains models for specular and wind-roughened oceans. Wind roughening is implemented for different ocean classes as</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">ocean.ocean</span></code>: interpolation of geophysical model functions (GMF) developed at discrete frequencies (e.g. papers by Meissner and Wentz).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">ocean.fastem</span></code>: the FASTEM-5 ocean emissivity model</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">ocean.two_scale</span></code>, a full two-scale model (originally developed by Simon Yueh).</p></li>
+</ul>
+<p>This module is combined with the <code class="code docutils literal notranslate"><span class="pre">atmosphere</span></code>, <code class="code docutils literal notranslate"><span class="pre">ionosphere</span></code>, and <code class="code docutils literal notranslate"><span class="pre">sky</span></code> modules to create a full forward model, which is controlled at a high level by the <code class="code docutils literal notranslate"><span class="pre">models</span></code> module.</p>
+<p>The SPICE-based <code class="code docutils literal notranslate"><span class="pre">spacecraft</span></code> module can be used to simulate pointing information from an orbiting spacecraft</p>
+<p>Several modules can operate in an <cite>online</cite> mode and download ancillary data from OpenDAP servers based on a user-specified <code class="code docutils literal notranslate"><span class="pre">datetime</span></code> object. Details of the ancillary data sources can be found in module documentation.</p>
+<p>FOAM is &lt;v1, so subsequent updates may signficantly alter workflow. Feel free to recommend changes that can improve the model via Github. If you notice any issues with FOAM, please raise an issue through GitHub or e-mail Alex Akins at <a class="reference external" href="mailto:alexander&#46;akins&#37;&#52;&#48;jpl&#46;nasa&#46;gov">alexander<span>&#46;</span>akins<span>&#64;</span>jpl<span>&#46;</span>nasa<span>&#46;</span>gov</a></p>
+<section id="installation-and-development">
+<h2>Installation and Development<a class="headerlink" href="#installation-and-development" title="Permalink to this headline"></a></h2>
+<p>To test FOAM, download the package from the repository and build locally using <cite>pip install -e .</cite></p>
+<p>FOAM modules download ancillary data from OpenDAP servers hosted by DAACs and other sources.
+To use FOAM, the user must configure .netrc, .urs_cookies, and .dodsrc files in their home directories following the instructions at
+<a class="reference external" href="https://disc.gsfc.nasa.gov/data-access">https://disc.gsfc.nasa.gov/data-access</a>.</p>
+<p>Before use, FOAM needs to build a local cache. Make sure you have wget and gzip installed on your machine, and execute the following in a Python terminal</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">foam.utils.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">setup_cache</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">get_ancillary_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will setup the cache (.foam) in your home directory and download some ancillary data required to use FOAM offline.</p>
+<p>There are several non-automated tests in the <cite>tests/</cite> directory that demonstrate use cases for each module. Any changes in the documentation can be compiled using <code class="code docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span> <span class="pre">html</span> <span class="pre">source</span> <span class="pre">build</span></code></p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/ocean.html">Ocean</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/ocean.html#setting-up-an-ocean-object">Setting Up an Ocean object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/ocean.html#module-foam.ocean">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/ionosphere.html">Ionosphere</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/ionosphere.html#module-foam.ionosphere">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/sky.html">Sky</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/sky.html#module-foam.sky">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/spacecraft.html">Spacecraft</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/spacecraft.html#setting-up-a-spacecraft-object">Setting Up a Spacecraft Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/spacecraft.html#interacting-with-a-spacecraft-object">Interacting with a Spacecraft Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/spacecraft.html#module-foam.spacecraft">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/solver.html">Solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/solver.html#module-foam.solver">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils/form_galaxy_tables.html">form_galaxy_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/reader.html">reader</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules/ocean.html" class="btn btn-neutral float-right" title="Ocean Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

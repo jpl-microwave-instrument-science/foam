@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sky Module &mdash; FOAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Dielectric Module" href="dielectric.html" />
+    <link rel="prev" title="Ionosphere Module" href="ionosphere.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> FOAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">FOAM Module API:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ocean.html">Ocean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atmosphere.html">Atmosphere</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ionosphere.html">Ionosphere</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sky</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-foam.sky">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dielectric.html">Dielectric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spacecraft.html">Spacecraft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FOAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Sky Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/sky.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sky-module">
+<h1>Sky Module<a class="headerlink" href="#sky-module" title="Permalink to this headline"></a></h1>
+<p>The Sky module defines the sky object, which defines models for microwave emission of the sun, moon, cosmic microwave background, and galaxy continuum emission. Static brightness temperatures are assumed for the moon (275 K) and the cosmic microwave background (2.73 K). The sun emission model is from the <a class="reference external" href="https://ipnpr.jpl.nasa.gov/progress_report/42-175/175E.pdf">IPN Progress report</a> by Ho et al. 2008 with an 11 year period and a 100000 K mean brightness temperature.
+The sun and moon are currently treated as reflecting from a specular surface, although this may limit accuracy at higher incidence angles. This behavior may be changed in the future.</p>
+<p>The L Band galactic brightness temperature map of Dinnat et al. is included and can be used to model specular reflection of galactic emission from the ocean surface. The frequency dependence of this emission is <span class="math notranslate nohighlight">\(T_B = T_{B,1.4 \textrm{GHz}} \left(\frac{f}{1.4 \textrm{GHz}}\right)^{-2.7}\)</span>. An approximation to scattering of galactic emission from a wind-roughened ocean surface is also included. This map was generated using the <code class="code docutils literal notranslate"><span class="pre">form_galaxy_tables</span></code> utility using the geometric optics approach described in the Aquarius Algorithm Theoretical Basis Document, and a description of this can be found in the utils documentation. Since galactic map described in the ATBD was generated specifically for Aquarius, a map of scattered emission in the nadir direction at the J2000 epoch was generated as a function of right ascension, declination, and wind speed to maintain generality. This scattered emission map is then treated as the true galaxy for specular ocean reflection.</p>
+<section id="module-foam.sky">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-foam.sky" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="foam.sky.sky">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foam.sky.</span></span><span class="sig-name descname"><span class="pre">sky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scattered_galaxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">galaxy_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.sky.sky" title="Permalink to this definition"></a></dt>
+<dd><p>The sky class implements models of all contributions to measured microwave emission above the ionosphere. This includes 
+the sun, moon, continuum galactic emission, and cosmic microwave background. See documentation for a description of these 
+models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scattered_galaxy</strong> – Toggles between specular reflection (False) and ocean surface scattering (True). Default is True</p></li>
+<li><p><strong>galaxy_file</strong> – Input galaxy map as a function of right ascension and declintion. If None, the FOAM default is used.
+Currently, only the FOAM default is supported, but this may be changed in the future</p></li>
+<li><p><strong>verbose</strong> – Toggles verbose output</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.sky.sky.read_galaxy">
+<span class="sig-name descname"><span class="pre">read_galaxy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.sky.sky.read_galaxy" title="Permalink to this definition"></a></dt>
+<dd><p>Reads galaxy map as a function of right acension vs declination and creates an interpolator
+If ocean scattering is specified, the interpolator is loaded from a pre-defined pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.sky.sky.galaxy_brightness">
+<span class="sig-name descname"><span class="pre">galaxy_brightness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.sky.sky.galaxy_brightness" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves galactic microwave brightness temperature from Dinnat et al. map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz (Size O)</p></li>
+<li><p><strong>ra</strong> – Right ascension in degrees (Size MxN)</p></li>
+<li><p><strong>dec</strong> – Declination in degrees (Size MxN)</p></li>
+<li><p><strong>wind</strong> – 10-m wind speed in m/s (Size MxN)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Galactic brightness temperature (Size OxMxN)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.sky.sky.sun_brightness">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sun_brightness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2005</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foam.sky.sky.sun_brightness" title="Permalink to this definition"></a></dt>
+<dd><p>Simple solar brightness temperature model using average solar flux
+value and sinusoidal dependence from Ho et al. 2008 JPL report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – Frequency in MHz</p></li>
+<li><p><strong>year</strong> – Observation year</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foam.sky.sky.moon_brightness">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">moon_brightness</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foam.sky.sky.moon_brightness" title="Permalink to this definition"></a></dt>
+<dd><p>Returns 275 K for moon brightness temperature</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ionosphere.html" class="btn btn-neutral float-left" title="Ionosphere Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dielectric.html" class="btn btn-neutral float-right" title="Dielectric Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Alex Akins.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
