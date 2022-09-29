@@ -1,6 +1,6 @@
 # FOAM
 The Forward Ocean Atmosphere Microwave (FOAM) model is a radiative transfer model and mission simulator framework for microwave remote sensing of the ocean. It was designed in the context of sea surface salinity observations, but can also be used to simulate sea surface temperature and ocean vector wind measurements
-Full documentation can be found in the docs/build directory. 
+Full documentation can be found at https://foam.readthedocs.io. 
 
 ## Installation
 FOAM can be installed (preferably in its own environment) using 
