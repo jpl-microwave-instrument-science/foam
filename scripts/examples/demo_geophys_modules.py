@@ -13,7 +13,7 @@ import cartopy.crs as ccrs
 # calm ocean brightness temperature at 1.4 GHz with a 40 degree incidence angle
 
 from foam import ocean
-oc = ocean.ocean(mode='full')
+oc = ocean.ocean(mode='rough')
 frequency = np.array([1.4e3])  # MHz
 lat_flat = np.linspace(89.5, -89.5, 180)
 lon_flat = np.linspace(-179.5, 179.5, 360)

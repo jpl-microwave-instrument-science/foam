@@ -740,7 +740,11 @@ class IONEXReader(Reader):
                 j_day = int(d.strftime('%j'))
                 filename = 'jplg{:03d}0.{:02d}i.Z'.format(j_day, year % 100)
                 urlstring = 'https://cddis.nasa.gov/archive/gnss/products/ionex/{:04d}/{:03d}/{}'.format(year, j_day, filename)
-                os.system('curl -c ~/.cddis_cookies -nOL %s' % urlstring)
+                # os.system('curl -c ~/.cddis_cookies -nOL %s' % urlstring)
+                cookie_dir = os.path.join(os.environ['HOME'], '.urs_cookies')
+                wget_args = ' --load-cookies {0} --save-cookies {0} --auth-no-challenge=on --keep-session-cookies --content-disposition '.format(cookie_dir)
+                os.system('wget' + wget_args + urlstring)
+
                 os.system('gzip -d %s' % filename)
                 filename = filename[:-2]
 

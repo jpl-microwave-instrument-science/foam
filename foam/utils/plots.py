@@ -8,10 +8,11 @@ import cartopy.crs as ccrs
 from .. import ocean
 from .. import atmosphere
 from .. import spacecraft as sc
+from .. import dielectric
 
 
 def plot_raw_inputs():
-    o = ocean.ocean(mode='simple')
+    o = ocean.ocean(mode='flat')
 
     lat = np.arange(90, -90, -1)
     lon = np.arange(-180, 180, 1)
@@ -70,8 +71,8 @@ def plot_TB_map():
     lat_flat = np.linspace(89.5, -89.5, int(180 / mesh_spacing))
     lon_flat = np.linspace(-179.5, 179.5, int(360 / mesh_spacing))
     lon, lat = np.meshgrid(lon_flat, lat_flat)
-    o = ocean.two_scale_ocean(verbose=True, mode='simple')
-    omap = o.get_ocean_TB_map(np.array([1e3]), mesh_spacing=mesh_spacing, theta=40)
+    o = ocean.ocean(mode='flat')
+    omap = o.get_ocean_TB(np.array([1e3]), theta=40)
     omap_v = omap[0][0] * (1 - o.landmask_interp((lat, lon)))
     omap_h = omap[1][0] * (1 - o.landmask_interp((lat, lon)))
     omap_v[omap_v < 50] = np.nan
@@ -103,8 +104,7 @@ def plot_dielectric():
     frequency = np.logspace(3, 6, 1000)
     salinity = np.linspace(30, 40, 10)
     temperature = 293 * np.ones(len(salinity))
-    o = ocean.ocean()
-    eps = o.h2o_liquid_saline_KleinSwift(frequency[:, np.newaxis], temperature[np.newaxis, :], salinity[np.newaxis, :]) 
+    eps = dielectric.h2o_liquid_saline_KleinSwift(frequency[:, np.newaxis], temperature[np.newaxis, :], salinity[np.newaxis, :]) 
     plt.figure()
     plt.loglog(frequency, np.real(eps))
     plt.figure()
@@ -113,9 +113,9 @@ def plot_dielectric():
 
 def plot_spectrum(): 
 
-    o = ocean.ocean(mode='simple')
+    o = ocean.ocean(mode='flat')
     frequency = np.linspace(0.5e3, 100e3, 1000)
-    TBV, TBH = o.get_quick_ocean_TB(frequency=frequency, sst=300, sss=35, uwind=0, vwind=0, gal_max=0, lat=0, angle=40)
+    TBV, TBH = o.get_ocean_TB(frequency=frequency, sst=300, sss=35, uwind=0, vwind=0, gal_max=0, lat=0, angle=40)
 
     plt.figure()
     plt.title(r'Ocean Emission Spectrum')
@@ -202,18 +202,17 @@ def plot_spectrum():
 def plot_weighting_function(): 
     res = 0.2
     ghz = np.array([23.8, 31.4, 50.3, 52.8, 53.596, 54.40, 54.94, 55.50, 57.29, 57.61, 89])
-    o = ocean.ocean(mode='flat')
+    atm = atmosphere.atmosphere()
     angle = np.radians(40)
     t = np.array([300.])
     p = np.array([1e5])
     prwtr = np.array([0])
     lwtr = np.array([0])
-    T, P, dens, wv, lw = o.isa_profiles(t, p, prwtr, lwtr, res=res)
-    tau, tbar = atmosphere.mrtm(ghz, P[::-1], T[::-1], wv[::-1], lw[::-1])
+    T, P, dens, wv, lw = atm.isa_profiles(t, p, prwtr, lwtr, res=res)
+    tau, tbar = atm.mrtm(ghz, P[::-1], T[::-1], wv[::-1], lw[::-1])
     transup = np.exp(-1 * np.cumsum(tau / np.cos(angle), axis=0))
     wup = -np.gradient(transup, axis=0)
     z = np.arange(0, 100 - res, res)[::-1]
-    print(tbar)
     cmap = plt.cm.viridis(np.linspace(0, 1, len(ghz)))
     for i in range(len(ghz)): 
         plt.plot(wup[:, i], z, color=cmap[i], label='%.2f GHz' % ghz[i])

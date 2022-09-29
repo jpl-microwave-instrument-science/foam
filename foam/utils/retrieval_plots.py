@@ -104,7 +104,3 @@ def plot_binned_dsss(out_dict, anc_dict, color='tab:blue', label=None, spline=Tr
     plot_snapshot_dsss(out_dict, anc_dict, color=color, label=label, spline=spline)
 
 
-
-
-
-
