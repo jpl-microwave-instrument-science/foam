@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='FOAM', 
+    name='foam-rtm', 
     version='0.1.0',
     author='Alex B. Akins',
     author_email='alexander.akins@jpl.nasa.gov',
