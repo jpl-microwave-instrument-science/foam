@@ -5,7 +5,7 @@ Full documentation can be found at https://foam.readthedocs.io.
 ## Installation
 FOAM can be installed (preferably in its own environment) using 
 
-    pip install foam 
+    pip install foam-rtm 
 
 FOAM modules download ancillary data from OpenDAP servers hosted by DAACs and other sources.
 To use FOAM, the user must configure .netrc, .urs_cookies, and .dodsrc files in their home directories following the instructions at 
