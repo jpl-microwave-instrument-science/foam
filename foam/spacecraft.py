@@ -229,7 +229,7 @@ class spacecraft():
         # spice.ckcls(file_ck)
         # spice.furnsh(spice_path + 'current_spacecraft.bck')
 
-    def write_radiometer_ck(self, look_angle, look_axis, rpm, scan_axis, antenna_pattern=None):
+    def write_radiometer_ck(self, look_angle, look_axis, rpm, scan_axis, antenna_fov_angle=180., antenna_pattern=None):
         """ Writes the camera kernel for a given radiometer. 
             This can be called multiple times with different ck numbers 
             to create several radiometers
@@ -242,6 +242,7 @@ class spacecraft():
             :param scan_axis: Scan rotation axis
                               Either 'X', 'Y', 'Z' in spacecraft frame or a vector
                               A negative sign can also be added e.g. -X
+            :param antenna_fov_angle: FWHM of antenna beam in degrees
             :param antenna_pattern: Text file describing radiometer antenna pattern
                                     This is a placeholder for future functionality.
 
@@ -260,6 +261,8 @@ class spacecraft():
         else:
             self.radiometer_fk_paths = [] 
             self.radiometer_ck_paths = []
+            self.radiometer_ik_paths = []
+            self.inst_ids = []
             count = 0
 
         # Select radiometer number by searching kernel pool 
@@ -278,6 +281,9 @@ class spacecraft():
         #         count += 1 
         #     else: 
         #         stay_flag = False
+
+        inst_id = int(self.naif_id * 1e3 - 1 - count)
+        self.inst_ids.append(inst_id)
 
         # Writing the FK
         fk_path = os.path.join(spice_path, 'spacecraft_{0}_radiometer_{1}.tf'.format(self.sc_number, count))
@@ -341,6 +347,25 @@ class spacecraft():
         spice.ckcls(file_ck)
         spice.furnsh(ck_path)
         self.radiometer_ck_paths.append(ck_path)
+
+        # Writing an IK 
+        ik_path = os.path.join(spice_path, 'spacecraft_{0}_radiometer_{1}.ti'.format(self.sc_number, count))
+        if os.path.exists(ik_path): os.remove(ik_path)
+        file_ik = open(ik_path, 'w')
+        file_ik.write("""KPL/IK 
+                    \\begindata
+                    INS{0}_FOV_SHAPE        = 'CIRCLE'
+                    INS{0}_FOV_FRAME        = 'SPACECRAFT_{1}_RADIOMETER_{2}'
+                    INS{0}_BORESIGHT        = (1.0, 0.0, 0.0)
+                    INS{0}_FOV_CLASS_SPEC   = 'ANGLES'
+                    INS{0}_FOV_REF_VECTOR   = (0.0, 1.0, 0.0)
+                    INS{0}_FOV_REF_ANGLE    = {3}
+                    INS{0}_FOV_ANGLE_UNITS  = 'DEGREES'
+                    
+                    """.format(inst_id, self.sc_number, count, antenna_fov_angle / 2))    
+        file_ik.close()
+        spice.furnsh(ik_path)
+        self.radiometer_ik_paths.append(ik_path)
         self.rad_number += 1
 
     def write_stationary_kernels(self, sub_long, sub_lat, height): 
