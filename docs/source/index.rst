@@ -35,7 +35,7 @@ https://disc.gsfc.nasa.gov/data-access.
 
 In your URS Earth data user profile, it will be necessary to authorize applications for PODAAC, GESDISC, CDDIS, and NSIDC (see https://urs.earthdata.nasa.gov/users/your_user_name/authorized_apps) to download files remotely
 
-Before use, FOAM needs to build a local cache. Make sure you have wget and gzip installed on your machine, and execute the following in a Python terminal 
+Before use, FOAM needs to build a local cache. Execute the following in a Python terminal 
 
 .. code-block:: python 
 

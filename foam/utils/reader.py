@@ -1,12 +1,15 @@
 import os
 import re
 import warnings
+import requests
 import numpy as np
 import scipy.interpolate as spi 
 import scipy.constants as spc
 import pandas as pd 
 import xarray as xr 
 from cftime import num2date, date2num
+
+from .zip_util import unzip_z_file
 
 
 class Reader(): 
@@ -740,20 +743,13 @@ class IONEXReader(Reader):
                 j_day = int(d.strftime('%j'))
                 filename = 'jplg{:03d}0.{:02d}i.Z'.format(j_day, year % 100)
                 urlstring = 'https://cddis.nasa.gov/archive/gnss/products/ionex/{:04d}/{:03d}/{}'.format(year, j_day, filename)
-                # os.system('curl -c ~/.cddis_cookies -nOL %s' % urlstring)
-                cookie_dir = os.path.join(os.environ['HOME'], '.urs_cookies')
-                wget_args = ' --load-cookies {0} --save-cookies {0} --auth-no-challenge=on --keep-session-cookies --content-disposition '.format(cookie_dir)
-                os.system('wget' + wget_args + urlstring)
-
-                os.system('gzip -d %s' % filename)
-                filename = filename[:-2]
+                
+                results = requests.get(urlstring)
+                ionex = unzip_z_file(results.content)
 
                 # Read file using comprehension 
-                with open(filename) as f:
-                    ionex = f.read()
-                    TEC = np.array([self.parse_ionex_map(t) for t in ionex.split('START OF TEC MAP')[1:]])
+                TEC = np.array([self.parse_ionex_map(t) for t in ionex.split('START OF TEC MAP')[1:]])
                 TECs.append(TEC[:-1, ...])  # Daily files have an overlap
-                os.system('rm %s' % filename)  # Get rid of downloaded file
                 
                 starttime_reference = d.strftime('hours since %Y-%-m-%-d 00:00:0.0')  # J2000 
                 time_date = num2date(hour_inc, starttime_reference)

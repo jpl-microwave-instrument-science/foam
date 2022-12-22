@@ -26,5 +26,6 @@ setup(
         'h5py >= 2.10.0',
         'sphinx >= 4.0.2', 
         'tqdm >= 4.0.0'
+        'requests >= 2.0.0'
         ]
     )
