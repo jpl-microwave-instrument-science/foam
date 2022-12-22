@@ -703,7 +703,7 @@ class IONEXReader(Reader):
     """ CDDIS Ionospheric Total Electron Content (TEC) from 
         https://cddis.nasa.gov/archive/gnss/products/ionex
         No OpenDAP or THREDDS interface available, 
-        so files are downloaded manually using curl and gzip
+        so files are downloaded manually
     """
 
     def read(self, from_dataset=False):

@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 import tarfile
-from urllib.requests import urlretrieve
+from urllib.request import urlretrieve
 
 import requests 
 from .zip_util import unzip_z_file

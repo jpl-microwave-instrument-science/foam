@@ -26,9 +26,9 @@ def read_antenna_pattern(file):
     return ap_dict
 
 
-def make_uniform_reflector(diameter, frequency, file):  
+def make_uniform_aperture_pattern(diameter, frequency, file=None):  
     """ Generates an antenna pattern assuming uniform illumination 
-        of a circular reflector with an arbitrary diameter 
+        of an aperture with an arbitrary diameter 
 
         :param diameter: Reflector diameter in meters
         :param frequency: Frequency in MHz 
@@ -53,7 +53,11 @@ def make_uniform_reflector(diameter, frequency, file):
 
     am, tm = np.meshgrid(azi_grid, theta_grid)
     save_pattern = np.vstack([np.degrees(tm).flatten(), np.degrees(am).flatten(), power_pattern.flatten()]).T 
-    np.savetxt(file, save_pattern, header='theta, phi, linear pattern', delimiter=',')
+
+    if file is not None: 
+        np.savetxt(file, save_pattern, header='theta, phi, linear pattern', delimiter=',')
+
+    return theta_grid, azi_grid, power_pattern
 
 
 
